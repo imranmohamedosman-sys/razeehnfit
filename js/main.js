@@ -1,4 +1,4 @@
-/* Razeehn — minimal vanilla JS: mobile menu, floating WhatsApp bar, footer year.
+/* Razeehn — minimal vanilla JS: mobile menu, floating WhatsApp bar, video gallery, footer year.
    No forms and no tracking: nothing is sent anywhere. Bookings happen on WhatsApp. */
 (function () {
   "use strict";
@@ -33,6 +33,37 @@
     var update = function () { sticky.classList.toggle("show", !heroVisible && !bookVisible); };
     new IntersectionObserver(function (e) { heroVisible = e[0].isIntersecting; update(); }).observe(hero);
     if (book) new IntersectionObserver(function (e) { bookVisible = e[0].isIntersecting; update(); }).observe(book);
+  }
+
+  // Video gallery: each clip is a link to its self-hosted MP4 (works without JS). With JS, the tap plays the
+  // clip in place. Nothing is downloaded before the tap (preload="none", posters load lazily).
+  var clips = Array.prototype.slice.call(document.querySelectorAll(".clip"));
+  var vids = [];
+  clips.forEach(function (clip) {
+    var link = clip.querySelector(".clip-play");
+    var v = clip.querySelector("video");
+    if (!link || !v) return;
+    vids.push(v);
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (!v.getAttribute("src")) v.src = link.getAttribute("href");
+      var img = link.querySelector("img");
+      if (img && img.currentSrc) v.poster = img.currentSrc;
+      v.controls = true;
+      clip.classList.add("playing");
+      var p = v.play();
+      if (p && p.catch) p.catch(function () { v.muted = true; v.play().catch(function () {}); });
+      v.focus();
+    });
+    v.addEventListener("play", function () {
+      vids.forEach(function (o) { if (o !== v && !o.paused) o.pause(); });
+    });
+  });
+  if (vids.length && "IntersectionObserver" in window) {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { if (!en.isIntersecting && !en.target.paused) en.target.pause(); });
+    }, { threshold: 0.2 });
+    vids.forEach(function (v) { vio.observe(v); });
   }
 
   var y = document.getElementById("year");
