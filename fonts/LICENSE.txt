@@ -1,0 +1,12 @@
+Fonts in this folder are self-hosted copies of free Google Fonts, all licensed under the
+SIL Open Font License 1.1 (https://openfontlicense.org), which allows use and redistribution on websites.
+
+- Anton            (c) The Anton Project Authors        https://fonts.google.com/specimen/Anton
+- Inter            (c) The Inter Project Authors        https://fonts.google.com/specimen/Inter
+- Instrument Serif (c) The Instrument Serif Project Authors  https://fonts.google.com/specimen/Instrument+Serif
+- Cairo            (c) The Cairo Project Authors        https://fonts.google.com/specimen/Cairo
+- Amiri            (c) The Amiri Project Authors        https://fonts.google.com/specimen/Amiri
+
+Files ending in "-subset" contain only the characters the pages use (e.g. the quote), to keep the site light.
+If you change the quote or those words, the new letters may show in a fallback font: re-download the font
+from Google Fonts (or use the full font) in that case.
