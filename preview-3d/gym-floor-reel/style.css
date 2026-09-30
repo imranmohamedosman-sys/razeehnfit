@@ -1,0 +1,118 @@
+/* Direction C — Gym Floor Reel. Light "chalk" palette from the brand's own text colour, espresso + gold accents. */
+@font-face{font-family:Anton;src:url(../../fonts/anton-latin.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Inter;src:url(../../fonts/inter-latin.woff2) format('woff2');font-weight:400 700;font-display:swap}
+@font-face{font-family:InstrumentSerif;font-style:italic;src:url(../shared/fonts/instrument-serif-italic.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Amiri;font-weight:700;src:url(../shared/fonts/amiri-700-ar-subset.woff2) format('woff2');font-display:swap}
+@font-face{font-family:PlexAr;src:url(../shared/fonts/plexar-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:PlexAr;src:url(../shared/fonts/plexar-600.woff2) format('woff2');font-weight:600;font-display:swap}
+:root{--chalk:#EFEBE4;--paper:#F7F4EF;--ink:#0B0B0C;--gold:#C9A26B;--esp:#2A1D14;--muted:#6f675d;--line:rgba(11,11,12,.12);
+  --display:Anton,Impact,sans-serif;--accent:InstrumentSerif,Georgia,serif;--body:Inter,system-ui,sans-serif}
+html[lang=ar]{--display:Amiri,"Noto Naskh Arabic",serif;--accent:Amiri,serif;--body:PlexAr,"Noto Sans Arabic",Tahoma,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--chalk);color:var(--ink);font:400 16px/1.6 var(--body)}
+html[lang=ar]{font-size:17px;line-height:1.85}
+body{overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+.wrap{width:min(1240px,100% - 40px);margin-inline:auto}
+.hdr{position:fixed;top:0;inset-inline:0;z-index:20;background:rgba(239,235,228,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.hdr .wrap{display:flex;align-items:center;gap:26px;height:62px}
+.logo{font:400 22px/1 Anton,sans-serif;letter-spacing:.04em}
+.logo span{font:700 20px/1 Amiri,serif;color:var(--gold);margin-inline-start:8px}
+.nav{display:flex;gap:22px;margin-inline-start:auto;font-size:14px;color:var(--muted)}
+.lang{font-size:14px;padding:6px 14px;border:1px solid var(--line);border-radius:99px}
+html:not([lang=ar]) .lang{font-family:PlexAr,sans-serif}
+
+.hero{position:relative;min-height:100svh;padding:92px 0 120px;display:grid;align-items:center}
+.hero .wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:24px;align-items:center}
+.eyebrow{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--esp);display:flex;gap:10px;align-items:center}
+html[lang=ar] .eyebrow{letter-spacing:0;font-size:15px;font-weight:600;text-transform:none}
+.eyebrow:before{content:"";width:22px;height:2px;background:var(--gold)}
+h1{font:400 clamp(52px,6.4vw,92px)/.92 var(--display);text-transform:uppercase;margin:18px 0 20px}
+h1 em{font:italic 400 1.08em/1 var(--accent);text-transform:none;color:var(--esp);letter-spacing:-.01em}
+html[lang=ar] h1{font-weight:700;text-transform:none;line-height:1.35;font-size:clamp(50px,6.2vw,88px)}
+html[lang=ar] h1 em{font:inherit;color:var(--gold)}
+.lead{color:#3b362f;max-width:30em;font-size:16.5px}
+.reel{position:relative;width:100%}
+.stagebox{position:relative;aspect-ratio:1.45;width:100%}
+.stagebox canvas,.stagebox .fallback{position:absolute;inset:0;width:100%;height:100%}
+h1 .ln{display:block}
+.reel canvas{opacity:0;transition:opacity .8s}
+html.is3d .reel canvas{opacity:1}
+html.is3d .reel .fallback{opacity:0;transition:opacity .8s}
+/* static fallback = the same composition in plain CSS 3D (no WebGL, ~0 KB JS) */
+.fallback{display:flex;align-items:center;justify-content:center;perspective:900px}
+.fallback img{width:24%;aspect-ratio:9/16;object-fit:cover;border-radius:14px;box-shadow:0 20px 50px rgba(42,29,20,.25)}
+.fallback img:nth-child(1){transform:translateX(18%) rotateY(28deg) scale(.82);opacity:.7}
+.fallback img:nth-child(2){transform:scale(1.12);z-index:1;box-shadow:0 30px 80px rgba(42,29,20,.4)}
+.fallback img:nth-child(3){transform:translateX(-18%) rotateY(-28deg) scale(.82);opacity:.7}
+.play{position:absolute;left:50%;top:50%;translate:-50% -50%;width:64px;height:64px;border-radius:50%;background:rgba(247,244,239,.92);display:grid;place-items:center;box-shadow:0 8px 30px rgba(0,0,0,.25);z-index:2}
+.play:before{content:"";border-style:solid;border-width:11px 0 11px 18px;border-color:transparent transparent transparent var(--ink);margin-left:4px}
+.cap{position:relative;text-align:center;z-index:2;margin-top:6px}
+.cap .tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:var(--ink);color:var(--chalk);border-radius:99px;padding:4px 12px}
+html[lang=ar] .cap .tag{letter-spacing:0;font-size:13px}
+.cap p{font:italic 400 24px/1.25 var(--accent);color:var(--esp);max-width:26em;margin:8px auto 0}
+html[lang=ar] .cap p{font:700 22px/1.6 var(--accent)}
+.cap .dur{font-size:12px;color:var(--muted)}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.dots i{width:6px;height:6px;border-radius:50%;background:rgba(11,11,12,.2)}
+.dots i.on{background:var(--gold);width:18px;border-radius:4px}
+
+/* About (scrolled section) */
+.about{background:var(--paper);padding:110px 0 150px;border-top:1px solid var(--line)}
+.about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.kicker{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:600}
+html[lang=ar] .kicker{letter-spacing:0;font-size:15px}
+.salaam{font:700 30px/1.3 Amiri,serif;color:var(--esp);margin:12px 0 0}
+.salaam small{font:italic 400 20px/1 InstrumentSerif,serif;color:var(--muted);margin-inline-start:10px}
+h2{font:400 clamp(44px,5vw,72px)/.95 var(--display);text-transform:uppercase;margin:8px 0 18px}
+html[lang=ar] h2{font-weight:700;text-transform:none;line-height:1.35}
+.about p{color:#3b362f;margin-bottom:14px;max-width:34em}
+.creds{list-style:none;display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);margin-top:26px}
+.creds li{padding:16px 12px 0 0;border-inline-end:1px solid var(--line);padding-inline-start:0}
+.creds li+li{padding-inline-start:14px}
+.creds li:last-child{border:0}
+.creds b{display:block;font:400 22px/1.1 var(--display);text-transform:uppercase}
+html[lang=ar] .creds b{font-weight:700;text-transform:none;font-size:22px;line-height:1.4}
+.creds span{font-size:13px;color:var(--muted)}
+.stills{position:relative;height:540px;perspective:1200px}
+.stills img{position:absolute;width:48%;aspect-ratio:4/5;object-fit:cover;border-radius:16px;box-shadow:0 30px 60px rgba(42,29,20,.28);transform-style:preserve-3d}
+.stills img:nth-child(1){inset-inline-start:0;top:30px;transform:rotateY(calc(var(--s,1)*18deg)) rotateZ(calc(var(--s,1)*-4deg))}
+.stills img:nth-child(2){inset-inline-start:26%;top:0;z-index:2;transform:translateZ(60px)}
+.stills img:nth-child(3){inset-inline-end:0;top:50px;transform:rotateY(calc(var(--s,1)*-18deg)) rotateZ(calc(var(--s,1)*4deg))}
+.stills img:nth-child(4){inset-inline-start:18%;top:300px;width:40%;z-index:3;transform:translateZ(90px) rotateZ(calc(var(--s,1)*-3deg))}
+html[dir=rtl] .stills{--s:-1}
+
+/* Sticky dock */
+.dock{position:fixed;z-index:30;left:50%;translate:-50% 0;bottom:calc(16px + env(safe-area-inset-bottom));display:flex;gap:8px;padding:8px;border-radius:99px;background:rgba(247,244,239,.78);backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 14px 40px rgba(42,29,20,.18)}
+.dock .wa{display:flex;align-items:center;gap:10px;background:var(--ink);color:var(--chalk);border-radius:99px;padding:12px 22px 12px 14px;font-weight:700;font-size:15px;white-space:nowrap}
+html[dir=rtl] .dock .wa{padding:12px 14px 12px 22px}
+.dock .wa svg{width:24px;height:24px;color:#25D366}
+.dock .wa small{font-weight:400;opacity:.7;font-size:12px;margin-inline-start:4px}
+.dock .ig{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line)}
+.dock .ig svg{width:22px;height:22px}
+
+@media (max-width:899px){
+  .nav{display:none}
+  .lang{margin-inline-start:auto}
+  .hero{padding:78px 0 110px;align-items:start}
+  .hero .wrap{grid-template-columns:1fr;gap:4px}
+  h1{font-size:clamp(46px,13vw,60px);margin:12px 0 10px}
+  html[lang=ar] h1{font-size:clamp(44px,12.4vw,58px);margin:6px 0 4px}
+  .lead{display:none}
+  .reel{margin-inline:-20px;width:calc(100% + 40px)}
+  .stagebox{aspect-ratio:1.08}
+  .cap p{font-size:19px;padding:0 20px}
+  html[lang=ar] .cap p{font-size:18px}
+  .about{padding:80px 0 130px}
+  .about .wrap{grid-template-columns:1fr;gap:34px}
+  .creds{grid-template-columns:1fr 1fr;row-gap:16px}
+  .creds li:nth-child(2){border:0}
+  .creds li:nth-child(3){padding-inline-start:0}
+  .stills{height:360px}
+  .stills img:nth-child(4){top:190px}
+  .dock{width:calc(100% - 24px);justify-content:space-between}
+  .dock .wa{flex:1;justify-content:center}
+  .dock .wa small{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
