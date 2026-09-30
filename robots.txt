@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://imranmohamedosman-sys.github.io/razeehnfit/sitemap.xml
