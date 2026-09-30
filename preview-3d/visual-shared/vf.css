@@ -1,0 +1,72 @@
+/* Visual-first previews: shared base. Phone-first, high contrast, big type, one giant WhatsApp button. */
+@font-face{font-family:Anton;src:url(../../fonts/anton-latin.woff2) format('woff2');font-display:swap}
+@font-face{font-family:Cairo;src:url(../../fonts/cairo-arabic.woff2) format('woff2');font-weight:400 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+FB50-FDFF,U+FE70-FEFC,U+200C-200E}
+@font-face{font-family:Cairo;src:url(../../fonts/cairo-latin.woff2) format('woff2');font-weight:400 900;font-display:swap;unicode-range:U+0000-00FF,U+2000-206F}
+:root{--bg:#0B0B0C;--ink:#F5F2EC;--gold:#C9A26B;--gold2:#E3C592;--green:#25D366;--gink:#04230F;--muted:#C9C2B6;--col:520px;
+  --display:Anton,Impact,"Arial Narrow Bold",sans-serif;--body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+html[lang=ar]{--display:Cairo,"Noto Kufi Arabic",sans-serif;--body:Cairo,"Noto Sans Arabic",Tahoma,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#000;color:var(--ink);font:500 17px/1.4 var(--body);-webkit-text-size-adjust:100%}
+body{min-height:100svh}
+a{color:inherit;text-decoration:none}
+img,video{display:block}
+.i{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.i.f{fill:currentColor;stroke:none}
+html[dir=rtl] .flip{transform:scaleX(-1)}
+.app{max-width:var(--col);margin:0 auto;background:var(--bg);position:relative;min-height:100svh;overflow:hidden}
+
+/* top bar: brand + EN/AR toggle, nothing else */
+.top{position:fixed;z-index:20;top:0;left:50%;translate:-50% 0;width:min(var(--col),100%);display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,0))}
+.me{display:flex;align-items:center;gap:10px;min-height:48px}
+.me img{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
+.me b{font:400 20px/1 Anton,sans-serif;letter-spacing:.03em}
+.me span{font:800 17px/1 Cairo,sans-serif;color:var(--gold2)}
+.lang{display:flex;border-radius:99px;background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.35);padding:3px}
+.lang a{min-width:56px;min-height:44px;display:grid;place-items:center;border-radius:99px;font-weight:800;font-size:16px;padding:0 12px}
+.lang a[lang=ar]{font-family:Cairo,sans-serif}
+.lang a[aria-current=page]{background:var(--ink);color:#000}
+
+/* the one giant WhatsApp button, always on screen */
+.wa{position:fixed;z-index:30;left:50%;translate:-50% 0;bottom:calc(12px + env(safe-area-inset-bottom));width:min(calc(var(--col) - 24px),calc(100% - 24px));min-height:68px;display:flex;align-items:center;justify-content:center;gap:12px;border-radius:99px;background:var(--green);color:var(--gink);font:900 21px/1.1 var(--body);box-shadow:0 10px 30px rgba(37,211,102,.35),0 4px 14px rgba(0,0,0,.5)}
+.wa .i{width:36px;height:36px}
+.wa:after{content:"";position:absolute;inset:-4px;border-radius:99px;border:3px solid var(--green);opacity:0;animation:ring 2.4s infinite}
+@keyframes ring{0%{opacity:.8;transform:scale(.98)}60%{opacity:0;transform:scale(1.06)}100%{opacity:0}}
+.wa:focus-visible,.lang a:focus-visible,a:focus-visible,button:focus-visible{outline:3px solid var(--gold2);outline-offset:3px}
+
+/* full-screen photo/clip sections */
+.s{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;gap:14px;padding:84px 22px 108px;overflow:hidden}
+.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.s>.shade{position:absolute;inset:0;z-index:1;background:linear-gradient(to top,rgba(0,0,0,.88) 0,rgba(0,0,0,.35) 45%,rgba(0,0,0,.1) 65%,rgba(0,0,0,.5) 100%)}
+.s>*:not(.bg):not(.shade){position:relative;z-index:2}
+.big{font:400 clamp(50px,14.5vw,78px)/.92 var(--display);text-transform:uppercase;text-shadow:0 2px 20px rgba(0,0,0,.6)}
+html[lang=ar] .big{font-weight:900;text-transform:none;line-height:1.2;font-size:clamp(44px,12.5vw,68px)}
+.sub{font-weight:800;font-size:22px;color:var(--gold2)}
+.ico{width:72px;height:72px;border-radius:50%;background:var(--gold);color:#141008;display:grid;place-items:center;font-size:38px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.icos{display:flex;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.3);border-radius:99px;padding:8px 14px;font-weight:800;font-size:16px}
+.pill .i{font-size:20px;color:var(--gold2)}
+
+/* clips: muted, autoplay only in view, posters first */
+.v{position:relative;overflow:hidden;background:#111}
+.v video{width:100%;height:100%;object-fit:cover}
+.playbtn{position:absolute;left:50%;top:50%;translate:-50% -50%;width:72px;height:72px;border-radius:50%;border:0;background:rgba(245,242,236,.92);color:#000;display:grid;place-items:center;font-size:30px;cursor:pointer;z-index:3}
+.playbtn .i{margin-inline-start:4px}
+.v.playing .playbtn{opacity:0;pointer-events:none}
+.strip{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 22px;margin:0 -22px;scrollbar-width:none}
+.strip::-webkit-scrollbar{display:none}
+.strip .v{flex:0 0 62%;aspect-ratio:9/16;border-radius:18px;scroll-snap-align:center}
+.tag{position:absolute;bottom:10px;inset-inline-start:10px;z-index:3;background:rgba(0,0,0,.65);border-radius:99px;padding:6px 12px;font-weight:800;font-size:15px}
+
+/* icon steps and icon facts */
+.steps{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.step{display:flex;flex-direction:column;align-items:center;gap:10px;font-weight:900;font-size:22px}
+.step .ico{width:84px;height:84px;font-size:44px}
+.step.wa1 .ico{background:var(--green);color:var(--gink)}
+.arrow{font-size:28px;color:var(--gold)}
+.facts{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.facts li{display:flex;align-items:center;gap:10px;min-height:64px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:10px 12px;font-weight:800;font-size:16px;line-height:1.2}
+.facts .i{font-size:30px;color:var(--gold2)}
+.hand{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font-weight:700}
+
+@media (min-width:700px){html{background:#050505 radial-gradient(60vmax 50vmax at 50% 0,#1b1612,#050505)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
