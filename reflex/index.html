@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <!-- Not linked from the main site yet. Remove noindex and add to sitemap.xml when it goes public. -->
+  <meta name="robots" content="noindex,nofollow">
+  <title>Razeehn Reflex</title>
+  <meta name="description" content="Reaction and agility training: random colour, arrow, number and shape cues for drills, plus a reaction-time test.">
+  <meta name="theme-color" content="#0B0B0C">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Reflex">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="preload" href="../fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="app.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ HOME ============ -->
+  <section class="screen" id="home" data-screen>
+    <header class="topbar">
+      <a class="logo" href="../" aria-label="Razeehn Fitness website">RAZEEHN<span>.</span></a>
+      <span class="tag">REFLEX</span>
+    </header>
+    <div class="hero">
+      <h1>Train your<br>first step.</h1>
+      <p>Put your phone or tablet on a stand, set out cones, and react to the cue on screen. Random timing means you can't guess.</p>
+    </div>
+
+    <div class="quick">
+      <button class="quick-card" data-go="test-simple">
+        <span class="qc-k">Test</span>
+        <span class="qc-t">Reaction time</span>
+        <span class="qc-s">Tap when the screen turns green</span>
+      </button>
+      <button class="quick-card" data-go="test-choice">
+        <span class="qc-k">Test</span>
+        <span class="qc-t">Left or right</span>
+        <span class="qc-s">Tap the side the arrow points to</span>
+      </button>
+    </div>
+
+    <div class="sec-head">
+      <h2>Drills</h2>
+      <button class="btn btn-small" data-action="new-drill">+ New drill</button>
+    </div>
+    <ul class="drill-list" id="drillList"></ul>
+
+    <div class="sec-head">
+      <h2>History</h2>
+      <button class="btn btn-small btn-ghost" data-go="history">See all</button>
+    </div>
+    <div id="homeStats" class="home-stats"></div>
+
+    <p class="foot">Made for athletes coached by <a href="../">Razeehn Fitness</a>. Works offline once opened. Add it to your home screen from the browser's share menu.</p>
+  </section>
+
+  <!-- ============ DRILL EDITOR ============ -->
+  <section class="screen" id="editor" data-screen hidden>
+    <header class="topbar">
+      <button class="icon-btn" data-back aria-label="Back">←</button>
+      <h2 class="topbar-title" id="editorTitle">Drill</h2>
+      <span></span>
+    </header>
+    <form id="drillForm" class="form" autocomplete="off">
+      <label class="field">
+        <span>Name</span>
+        <input name="name" maxlength="40" required>
+      </label>
+
+      <fieldset class="field">
+        <legend>Cue type</legend>
+        <div class="seg" id="typeSeg">
+          <label><input type="radio" name="type" value="color"><span>Colours</span></label>
+          <label><input type="radio" name="type" value="arrow"><span>Arrows</span></label>
+          <label><input type="radio" name="type" value="number"><span>Numbers</span></label>
+          <label><input type="radio" name="type" value="shape"><span>Shapes</span></label>
+          <label><input type="radio" name="type" value="side"><span>Sides</span></label>
+          <label><input type="radio" name="type" value="mixed"><span>Mixed</span></label>
+        </div>
+        <p class="hint" id="typeHint"></p>
+      </fieldset>
+
+      <fieldset class="field" data-for="color mixed">
+        <legend>Colours to use</legend>
+        <div class="chips" id="colorChips"></div>
+      </fieldset>
+      <fieldset class="field" data-for="arrow mixed">
+        <legend>Directions to use</legend>
+        <div class="chips" id="arrowChips"></div>
+      </fieldset>
+      <fieldset class="field" data-for="shape">
+        <legend>Shapes to use</legend>
+        <div class="chips" id="shapeChips"></div>
+      </fieldset>
+      <div class="row" data-for="number">
+        <label class="field"><span>From</span><input type="number" name="numMin" min="0" max="99" inputmode="numeric"></label>
+        <label class="field"><span>To</span><input type="number" name="numMax" min="0" max="99" inputmode="numeric"></label>
+      </div>
+
+      <fieldset class="field" data-for="color">
+        <legend>Go / No-go</legend>
+        <label class="switch"><input type="checkbox" name="nogo"><span>Add a "hold" colour: athlete stays still when it shows</span></label>
+        <div class="row" data-nogo>
+          <label class="field"><span>Hold colour</span><select name="nogoColor" id="nogoSelect"></select></label>
+          <label class="field"><span>How often (%)</span><input type="number" name="nogoPct" min="5" max="60" step="5" inputmode="numeric"></label>
+        </div>
+      </fieldset>
+
+      <h3 class="form-h">Timing</h3>
+      <div class="row">
+        <label class="field"><span>Pause min (s)</span><input type="number" name="gapMin" min="0.3" max="30" step="0.1" inputmode="decimal"></label>
+        <label class="field"><span>Pause max (s)</span><input type="number" name="gapMax" min="0.3" max="30" step="0.1" inputmode="decimal"></label>
+      </div>
+      <p class="hint">The wait before each cue is picked at random between these two.</p>
+      <label class="field">
+        <span>Cue stays on for (s)</span>
+        <input type="number" name="show" min="0" max="30" step="0.1" inputmode="decimal">
+      </label>
+      <p class="hint">0 keeps the cue on screen until the next one.</p>
+
+      <h3 class="form-h">Volume</h3>
+      <div class="row row-3">
+        <label class="field"><span>Cues per set</span><input type="number" name="reps" min="1" max="200" inputmode="numeric"></label>
+        <label class="field"><span>Sets</span><input type="number" name="sets" min="1" max="20" inputmode="numeric"></label>
+        <label class="field"><span>Rest (s)</span><input type="number" name="rest" min="0" max="600" step="5" inputmode="numeric"></label>
+      </div>
+
+      <h3 class="form-h">Feedback</h3>
+      <fieldset class="field">
+        <legend>Sound</legend>
+        <div class="seg">
+          <label><input type="radio" name="sound" value="beep"><span>Beep</span></label>
+          <label><input type="radio" name="sound" value="voice"><span>Voice</span></label>
+          <label><input type="radio" name="sound" value="off"><span>Off</span></label>
+        </div>
+        <p class="hint">Voice calls the cue out loud, so athletes can react without looking.</p>
+      </fieldset>
+      <label class="switch"><input type="checkbox" name="noRepeat"><span>Never show the same cue twice in a row</span></label>
+      <label class="switch"><input type="checkbox" name="vibrate"><span>Vibrate on each cue (Android)</span></label>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-block">Save drill</button>
+        <button type="button" class="btn btn-block btn-ghost" data-action="save-run">Save and start</button>
+        <button type="button" class="btn btn-block btn-danger" data-action="delete-drill" hidden>Delete drill</button>
+      </div>
+    </form>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section class="screen" id="history" data-screen hidden>
+    <header class="topbar">
+      <button class="icon-btn" data-back aria-label="Back">←</button>
+      <h2 class="topbar-title">History</h2>
+      <span></span>
+    </header>
+    <div id="historyChart"></div>
+    <ul class="history-list" id="historyList"></ul>
+    <button class="btn btn-small btn-ghost btn-danger-text" data-action="clear-history">Clear history</button>
+  </section>
+
+  <!-- ============ RUN (full screen drill) ============ -->
+  <section class="stage" id="run" hidden>
+    <div class="stage-cue" id="cue"></div>
+    <div class="stage-hud">
+      <span id="hudSet"></span>
+      <span id="hudRep"></span>
+    </div>
+    <div class="stage-bar"><i id="hudBar"></i></div>
+    <div class="stage-overlay" id="overlay" hidden>
+      <div class="ov-box">
+        <p class="ov-k" id="ovKicker"></p>
+        <p class="ov-big" id="ovBig"></p>
+        <p class="ov-sub" id="ovSub"></p>
+        <div class="ov-actions" id="ovActions"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEST (reaction time) ============ -->
+  <section class="stage test" id="test" hidden>
+    <button class="test-pad" id="testPad" aria-live="polite">
+      <span class="tp-big" id="tpBig"></span>
+      <span class="tp-sub" id="tpSub"></span>
+    </button>
+    <div class="stage-hud"><span id="tpCount"></span><button class="hud-x" id="testExit" aria-label="Stop test">✕</button></div>
+  </section>
+
+</div>
+
+<template id="drillItem">
+  <li class="drill">
+    <button class="drill-main">
+      <span class="drill-swatch" aria-hidden="true"></span>
+      <span class="drill-text"><strong></strong><small></small></span>
+    </button>
+    <div class="drill-tools">
+      <button class="icon-btn" data-tool="share" aria-label="Share drill">⤴</button>
+      <button class="icon-btn" data-tool="edit" aria-label="Edit drill">✎</button>
+    </div>
+  </li>
+</template>
+
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>
