@@ -42,15 +42,3 @@ The site's full address is already in place. There is no need to wait for a cust
 2. Replace `https://imranmohamedosman-sys.github.io/razeehnfit/` with the new address everywhere it appears:
    the head and JSON-LD of `index.html` and `ar.html`, `sitemap.xml` and `robots.txt`.
 3. In `404.html`, change the `/razeehnfit/` link prefixes to `/`.
-
-## Reflexa by NextXI (reaction training app)
-`reflexa/` is **Reflexa**, a NextXI product hosted in this repository for now. It has its own branding (lime on black,
-no Razeehn name or links) and installs to the home screen (live at `/razeehnfit/reflexa/`). It is **not linked from
-the Razeehn site and is `noindex`**. If it gets its own domain or repository later, copy the `reflexa/` folder and the
-two fonts it loads from `../fonts/` (`anton-latin.woff2`, `inter-latin.woff2`).
-- Drills: random full-screen colours, arrows (4 or 8 directions), numbers, shapes, left/right sides, or colours and
-  arrows mixed. Go/no-go "hold" colour, random pause range, cue duration, sets, reps, rest, beep or spoken cues.
-- Tests: simple reaction time (5 tries) and left-or-right choice reaction (8 tries); early taps and guesses under
-  100 ms are rejected. Results and drill sessions are kept on the athlete's own device (`localStorage`).
-- The share button on a drill makes a link (`reflexa/#drill=...`) that adds the drill to whoever opens it.
-- Works offline (`reflexa/sw.js`). After changing any file in `reflexa/`, bump `VERSION` in `sw.js`.
