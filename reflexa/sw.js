@@ -1,5 +1,5 @@
-// Offline cache for Razeehn Reflex. Bump VERSION whenever an app file changes.
-const VERSION = 'reflex-v1';
+// Offline cache for Reflexa by NextXI. Bump VERSION whenever an app file changes.
+const VERSION = 'reflexa-v1';
 const FILES = ['./', 'index.html', 'app.css', 'app.js', 'manifest.webmanifest', 'icon.svg', 'icon-192.png',
   '../fonts/anton-latin.woff2', '../fonts/inter-latin.woff2'];
 

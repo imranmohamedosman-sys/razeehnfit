@@ -2,8 +2,8 @@
 @font-face{font-family:Inter;src:url(../fonts/inter-latin.woff2) format('woff2');font-weight:400 800;font-display:swap}
 
 :root{
-  --bg:#0B0B0C; --bg-2:#141416; --bg-3:#1C1C1F; --line:#2A2A2E;
-  --text:#EFEBE4; --muted:#A29D94; --accent:#C9A26B; --accent-2:#E3C592; --accent-ink:#141008;
+  --bg:#0A0C0A; --bg-2:#121512; --bg-3:#1A1E1A; --line:#283028;
+  --text:#F1F4EE; --muted:#9AA396; --accent:#C6F432; --accent-2:#DBFF6B; --accent-ink:#0B0F02;
   --danger:#E0312F;
   --display:"Anton","Impact","Arial Narrow Bold",sans-serif;
   --body:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
@@ -29,7 +29,7 @@ a{color:var(--accent)}
 .hero p{margin:0;color:var(--muted);max-width:46ch}
 
 .quick{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:22px 0 6px}
-.quick-card{text-align:left;border:1px solid var(--line);background:linear-gradient(160deg,#1f1a14,var(--bg-2) 60%);border-radius:18px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-height:128px}
+.quick-card{text-align:left;border:1px solid var(--line);background:linear-gradient(160deg,#1a2308,var(--bg-2) 60%);border-radius:18px;padding:16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-height:128px}
 .quick-card:hover{border-color:var(--accent)}
 .qc-k{font:700 11px/1 var(--body);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
 .qc-t{font:400 24px/1.05 var(--display);text-transform:uppercase;margin-top:6px}

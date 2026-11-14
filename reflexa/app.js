@@ -1,4 +1,4 @@
-/* Razeehn Reflex — reaction and agility training.
+/* Reflexa by NextXI — reaction and agility training.
    Plain JavaScript, no build step. Data lives in this browser's localStorage. */
 (() => {
   'use strict';
@@ -81,7 +81,7 @@
   /* ------------------------------------------------------------------
      Storage
      ------------------------------------------------------------------ */
-  const KEY = 'razeehn-reflex-v1';
+  const KEY = 'nextxi-reflexa-v1';
   const uid = () => Math.random().toString(36).slice(2, 10);
   let db = load();
 
@@ -200,9 +200,9 @@
       const step = 360 / c.length;
       el.style.background = 'conic-gradient(' + c.map((h, i) => `${h} ${i * step}deg ${(i + 1) * step}deg`).join(',') + ')';
       if (d.type === 'mixed') el.innerHTML = arrowSvg(90);
-    } else if (d.type === 'arrow') el.innerHTML = arrowSvg(ARROWS[d.arrows[0]].deg, '#C9A26B');
+    } else if (d.type === 'arrow') el.innerHTML = arrowSvg(ARROWS[d.arrows[0]].deg, '#C6F432');
     else if (d.type === 'number') el.textContent = d.numMax;
-    else if (d.type === 'shape') el.innerHTML = shapeSvg(d.shapes[0], '#C9A26B');
+    else if (d.type === 'shape') el.innerHTML = shapeSvg(d.shapes[0], '#C6F432');
     else if (d.type === 'side') el.style.background = 'linear-gradient(90deg,#F5F5F2 50%,#000 50%)';
   }
   function renderHome() {
@@ -248,8 +248,8 @@
     return `<label><input type="checkbox" name="${name}" value="${key}"><span><i>${icon}</i>${esc(label)}</span></label>`;
   }
   $('#colorChips').innerHTML = Object.entries(COLORS).map(([k, c]) => chipHtml('colors', k, c.name, `<b style="display:block;width:24px;height:24px;border-radius:7px;background:${c.hex}"></b>`)).join('');
-  $('#arrowChips').innerHTML = Object.entries(ARROWS).map(([k, a]) => chipHtml('arrows', k, a.name, arrowSvg(a.deg, '#EFEBE4'))).join('');
-  $('#shapeChips').innerHTML = Object.entries(SHAPES).map(([k, s]) => chipHtml('shapes', k, s.name, shapeSvg(k, '#EFEBE4'))).join('');
+  $('#arrowChips').innerHTML = Object.entries(ARROWS).map(([k, a]) => chipHtml('arrows', k, a.name, arrowSvg(a.deg, '#F1F4EE'))).join('');
+  $('#shapeChips').innerHTML = Object.entries(SHAPES).map(([k, s]) => chipHtml('shapes', k, s.name, shapeSvg(k, '#F1F4EE'))).join('');
 
   function syncEditor() {
     const type = form.type.value;
@@ -335,7 +335,7 @@
   async function shareDrill(d) {
     const { id, ...data } = d;
     const url = location.origin + location.pathname + '#drill=' + b64(JSON.stringify(data));
-    const text = `Reaction drill: ${d.name}`;
+    const text = `Reflexa drill: ${d.name}`;
     try {
       if (navigator.share) { await navigator.share({ title: d.name, text, url }); return; }
       await navigator.clipboard.writeText(url);
@@ -617,7 +617,7 @@
     db.history = db.history.slice(-300); save();
     const extra = [test.early && `${test.early} too soon`, test.errors && `${test.errors} wrong side`].filter(Boolean).join(' · ');
     setPad('', `${avg}<small style="font-size:.4em"> ms</small>`,
-      `Average · best ${best} ms${prev.length && best < pb ? ' <b style="color:#E3C592">new personal best</b>' : ''}<br>${t.join(' · ')} ms${extra ? '<br>' + extra : ''}` +
+      `Average · best ${best} ms${prev.length && best < pb ? ' <b style="color:#DBFF6B">new personal best</b>' : ''}<br>${t.join(' · ')} ms${extra ? '<br>' + extra : ''}` +
       `<br><span style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn" data-t="again">Test again</button><button class="btn btn-ghost" style="color:#fff" data-t="home">Done</button></span>`);
     $('#tpCount').textContent = 'Result';
   }
@@ -667,8 +667,8 @@
     const pts = vals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
     return `<div class="chart"><h3>${label}: last ${vals.length} tests (lower is better)</h3>
       <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${label} averages from ${vals[0]} to ${vals[vals.length - 1]} ms">
-      <polyline points="${pts}" fill="none" stroke="#C9A26B" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
-      ${vals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#E3C592"/>`).join('')}
+      <polyline points="${pts}" fill="none" stroke="#C6F432" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+      ${vals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="3" fill="#DBFF6B"/>`).join('')}
       </svg><p class="hint" style="margin:6px 0 0">First ${vals[0]} ms → latest ${vals[vals.length - 1]} ms</p></div>`;
   }
   function renderHistory() {
